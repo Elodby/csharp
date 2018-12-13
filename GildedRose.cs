@@ -14,7 +14,7 @@ namespace csharp
         public void UpdateQuality()
         {
             bool isBackstage;
-
+            bool isConjuredOrPassed;
             foreach (Item item in Items)
             {
                 if (item.Name.Equals("Sulfuras, Hand of Ragnaros"))
@@ -23,11 +23,12 @@ namespace csharp
                 isBackstage = item.Name.StartsWith("Backstage passes");
                 if (!item.Name.Equals("Aged Brie") && !isBackstage)
                 {
-                    item.Quality = UsualQualityTreatment(item.Quality, item.Name.StartsWith("Conjured"), item.SellIn < 0);
+                    isConjuredOrPassed = item.Name.StartsWith("Conjured") || item.SellIn < 0;
+                    item.Quality = UsualQualityTreatment(item.Quality, isConjuredOrPassed);
                 }
                 else
                 {
-                    item.Quality = QualityIncrease(item.Quality, item.SellIn, isBackstage);
+                    item.Quality = QualityIncrease(item, isBackstage);
                 }
             }
         }
@@ -43,26 +44,22 @@ namespace csharp
             }
         }
 
-        public int UsualQualityTreatment(int _quality, bool isConjured, bool isSellinPassed)
+        public int UsualQualityTreatment(int _quality, bool _isConjuredOrPassed)
         {
             _quality--;
-            if (isConjured || isSellinPassed)
-            {
+            if (_isConjuredOrPassed)
                 _quality--;
-            }
 
             return _quality < 0 ? 0 : _quality;
         }
 
-        private int QualityIncrease(int _quality, int _sellIn, bool isBackstage)
+        private int QualityIncrease(Item _item, bool _isBackstage)
         {
-            _quality++;
-            if (isBackstage)
-            {
-                _quality = BackstageQualityTreatment(_quality, _sellIn);
-            }
+            _item.Quality++;
+            if (_isBackstage)
+                _item.Quality = BackstageQualityTreatment(_item.Quality, _item.SellIn);
             
-            return _quality < 50 ? _quality : 50;
+            return _item.Quality < 50 ? _item.Quality : 50;
         }
 
         private int BackstageQualityTreatment(int _quality, int _sellIn)

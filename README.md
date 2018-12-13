@@ -2,8 +2,9 @@
 
 The programme is a copy of csharp project od the original Kata project: https://github.com/emilybache/GildedRose-Refactoring-Kata.
 The main changes are in the GiledRose class and GiledRoseTest, and respect the Code Hub standards.
+The results of the initial project can be found in the file ThirtyDays.txt.
 
-The requirements and specifications for the refacto were the following:
+The requirements and specifications for the refactoring were the following:
 
 ======================================
 Gilded Rose Requirements Specification
